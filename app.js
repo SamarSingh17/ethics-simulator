@@ -1,0 +1,45 @@
+const dilemmas = [
+  {tag:'CONSEQUENCES',title:'The autonomous ambulance',body:'An autonomous ambulance is carrying one critically injured patient. A road collapse blocks the route. The only detour crosses a fragile footbridge where two pedestrians are walking. Continuing may save the patient but puts the pedestrians at serious risk.',stakes:['1 urgent patient','2 pedestrians','uncertain risk'],choices:['Cross the bridge and prioritize the patient','Stop and wait for a safe route','Ask the patient’s family to decide'],scores:[[3,0,1,1,0,2],[0,3,2,3,2,1],[1,1,0,2,3,1]]},
+  {tag:'TRUTH',title:'The comforting diagnosis',body:'Your closest friend is terminally ill. Their doctor privately tells you the prognosis, but your friend asks you directly and says they cannot bear more bad news. The doctor will not speak until tomorrow.',stakes:['truth','emotional harm','trust'],choices:['Tell the full truth now','Offer comfort without answering directly','Respect the doctor’s process and say nothing'],scores:[[1,3,2,0,1,3],[2,0,1,3,3,1],[1,2,2,2,2,0]]},
+  {tag:'JUSTICE',title:'The stolen medicine',body:'You manage a clinic with one dose of a rare medicine. A parent steals it for their child, who will die without it. Another patient was selected by a fair lottery and is already waiting.',stakes:['2 lives','fair process','parental duty'],choices:['Let the parent keep the medicine','Return it to the lottery winner','Split the dose, though it may help neither'],scores:[[3,0,2,3,3,2],[1,3,2,1,0,2],[0,1,1,2,2,3]]},
+  {tag:'TECHNOLOGY',title:'The perfect prediction',body:'A system predicts violent crime with 92% accuracy. Police can prevent harm by quietly monitoring high-risk people, none of whom have committed a crime. The model’s inner workings cannot be fully explained.',stakes:['public safety','privacy','algorithmic bias'],choices:['Deploy it with strict oversight','Reject prediction-based surveillance','Run a limited, voluntary trial'],scores:[[3,1,1,1,0,2],[0,3,2,2,2,3],[2,2,3,3,3,1]]},
+  {tag:'LOYALTY',title:'The friend who cheated',body:'A friend confesses they cheated on an exam that determines a life-changing scholarship. Reporting them protects the integrity of the award; silence protects someone you love from a mistake they deeply regret.',stakes:['friendship','fairness','future opportunity'],choices:['Report the cheating','Keep their confidence','Ask them to confess themselves'],scores:[[2,3,1,0,0,2],[1,0,1,3,3,0],[3,2,3,2,2,3]]},
+  {tag:'SACRIFICE',title:'The last seat',body:'A rescue craft has one seat left. Three people remain: a young climate scientist, an elderly caregiver supporting two grandchildren, and the engineer who can navigate the dangerous return journey.',stakes:['one seat','social value','equal dignity'],choices:['Choose the engineer','Use a random lottery','Give the seat to the caregiver'],scores:[[3,1,2,0,0,1],[1,3,1,1,2,3],[2,0,3,3,3,2]]}
+];
+
+const schools=[
+  ['Utilitarianism','∑','asks which action is likely to produce the greatest total well-being and least suffering.'],
+  ['Deontology','□','tests whether the action respects duties, rights, and rules you could will for everyone.'],
+  ['Virtue ethics','◇','looks beyond the act to the character it expresses: courage, honesty, justice, practical wisdom.'],
+  ['Care ethics','∞','centres relationships, vulnerability, context, and the responsibility to respond to particular others.'],
+  ['Confucian ethics','和','considers humane conduct, cultivated character, and the obligations woven through our roles.'],
+  ['Existentialism','○','asks whether you choose freely, own the consequences, and leave others free to choose too.']
+];
+
+const books=[
+  ['west','Plato','The Republic','Justice · society','c. 375 BCE','Π','https://www.gutenberg.org/ebooks/1497'],
+  ['west','Aristotle','Nicomachean Ethics','Virtue · flourishing','c. 340 BCE','A','https://www.gutenberg.org/files/8438/8438-h/8438-h'],
+  ['west','Epictetus','The Enchiridion','Agency · character','c. 125 CE','ε','https://www.gutenberg.org/ebooks/45109'],
+  ['east','Confucius','The Analects','Role · harmony','c. 475–221 BCE','和','https://en.wikisource.org/wiki/The_Chinese_Classics/Volume_1/Confucian_Analects'],
+  ['east','Laozi','Tao Te Ching','Way · non-action','c. 4th c. BCE','道','https://www.gutenberg.org/ebooks/216'],
+  ['religious','Anonymous','Bhagavad Gita','Duty · action','c. 2nd c. BCE','ॐ','https://www.swaveda.com/texts/bhagavad-gita/'],
+  ['religious','Buddhist canon','The Dhammapada','Mind · suffering','c. 3rd c. BCE','☸','https://www.swaveda.com/texts/dhammapada/'],
+  ['west','Immanuel Kant','Groundwork','Duty · dignity','1785','K','https://www.gutenberg.org/ebooks/5682'],
+  ['west','John Stuart Mill','Utilitarianism','Happiness · justice','1863','U','https://www.gutenberg.org/ebooks/11224'],
+  ['modern','W. E. B. Du Bois','The Souls of Black Folk','Freedom · recognition','1903','D','https://www.gutenberg.org/ebooks/408'],
+  ['modern','Simone de Beauvoir','The Ethics of Ambiguity','Freedom · responsibility','1947','S','https://plato.stanford.edu/entries/beauvoir/'],
+  ['modern','Nel Noddings','Caring','Relation · response','1984','N','https://www.ucpress.edu/books/caring/paper']
+];
+
+let current=Number(localStorage.getItem('ethos-current')||0);let totals=JSON.parse(localStorage.getItem('ethos-totals')||'[0,0,0,0,0,0]');
+const $=s=>document.querySelector(s);
+function renderDilemma(){const d=dilemmas[current];$('#caseNumber').textContent=`CASE ${String(current+1).padStart(2,'0')}`;$('#caseTag').textContent=d.tag;$('#dilemmaTitle').textContent=d.title;$('#dilemmaBody').textContent=d.body;$('#stakes').innerHTML=d.stakes.map(x=>`<span>${x}</span>`).join('');$('#choices').innerHTML=d.choices.map((x,i)=>`<button class="choice" data-i="${i}"><b>${String.fromCharCode(65+i)}</b><span>${x}</span><i>→</i></button>`).join('');$('#progressText').textContent=`${String(current+1).padStart(2,'0')} / 06`;$('#progressBar').style.width=`${(current+1)/dilemmas.length*100}%`;$('#reflection').classList.add('hidden');document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>choose(+b.dataset.i));}
+function choose(i){const d=dilemmas[current];d.scores[i].forEach((v,j)=>totals[j]+=v);localStorage.setItem('ethos-totals',JSON.stringify(totals));$('#verdictTitle').textContent=`You chose: “${d.choices[i]}”`;$('#lenses').innerHTML=schools.slice(0,3).map((s,j)=>{const score=d.scores[i][j];return `<article class="lens"><div class="lens-top"><span class="lens-icon">${s[1]}</span><span class="alignment">${score===3?'STRONGLY ALIGNED':score===2?'IN CONVERSATION':score===1?'TENSION':'CHALLENGED'}</span></div><h4>${s[0]}</h4><p>This tradition ${s[2]} Your choice ${score>1?'leans toward':'sits in tension with'} that emphasis.</p></article>`}).join('');$('#reflection').classList.remove('hidden');renderConstellation();$('#reflection').scrollIntoView({behavior:'smooth',block:'center'});}
+$('#nextDilemma').onclick=()=>{current=(current+1)%dilemmas.length;localStorage.setItem('ethos-current',current);renderDilemma();$('#dilemmaCard').scrollIntoView({behavior:'smooth',block:'center'})};
+function renderBooks(filter='all',query=''){const q=query.toLowerCase();const shown=books.filter(b=>(filter==='all'||b[0]===filter)&&b.slice(1,5).join(' ').toLowerCase().includes(q));$('#bookGrid').innerHTML=shown.length?shown.map(b=>`<a class="book" href="${b[6]}" target="_blank" rel="noreferrer"><div class="meta"><span>${b[0]}</span><span>${b[4]}</span></div><div class="glyph">${b[5]}</div><h3>${b[2]}</h3><p>${b[1]}<br>${b[3]}</p><span class="arrow">↗</span></a>`).join(''):'<div class="empty">No texts found on this shelf.</div>';}
+let filter='all';document.querySelectorAll('#filters button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#filters button').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.filter;renderBooks(filter,$('#searchInput').value)});$('#searchInput').oninput=e=>renderBooks(filter,e.target.value);
+function renderConstellation(){const max=Math.max(...totals,1);$('#constellation').innerHTML=schools.map((s,i)=>`<div class="trait"><span>${s[0]}</span><div class="trait-line"><i style="width:${totals[i]/max*100}%"></i></div><b>${totals[i]}</b></div>`).join('')}
+$('#resetJourney').onclick=()=>{localStorage.removeItem('ethos-current');localStorage.removeItem('ethos-totals');current=0;totals=[0,0,0,0,0,0];renderDilemma();renderConstellation()};
+let audio;
+$('#soundToggle').onclick=e=>{const on=e.currentTarget.classList.toggle('on');if(on){const Ctx=window.AudioContext||window.webkitAudioContext;audio=new Ctx();const master=audio.createGain();master.gain.value=.018;master.connect(audio.destination);[110,164.81,220].forEach((f,i)=>{const osc=audio.createOscillator();const gain=audio.createGain();osc.type=i===1?'sine':'triangle';osc.frequency.value=f;gain.gain.value=i===1?.45:.25;osc.connect(gain).connect(master);osc.start()});}else if(audio){audio.close();audio=null}e.currentTarget.innerHTML=`<span style="background:${on?'#d9f266':'#bc5b3e'}"></span> Sound ${on?'on':'off'}`};
+renderDilemma();renderBooks();renderConstellation();
