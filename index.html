@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A reflective moral dilemma simulator viewed through the world's philosophical traditions." />
+  <title>Ethos — A Moral Imagination Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="nav shell">
+    <a class="brand" href="#top" aria-label="Ethos home"><span class="brand-mark">E</span><span>ETHOS</span></a>
+    <nav aria-label="Main navigation">
+      <a href="#lab">The Lab</a><a href="#library">The Library</a><a href="#about">About</a>
+    </nav>
+    <button class="sound" id="soundToggle" aria-label="Toggle ambient sound"><span></span> Sound off</button>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> A moral imagination lab</div>
+        <h1>What would<br><em>you</em> do?</h1>
+        <p>Step into the grey. Make difficult choices, then see how your moral instinct converses with thinkers across centuries and cultures.</p>
+        <a class="primary-btn" href="#lab">Enter the first dilemma <span>↘</span></a>
+      </div>
+      <div class="orbital" aria-hidden="true">
+        <div class="orbit orbit-a"><i></i></div><div class="orbit orbit-b"><i></i></div>
+        <div class="core"><span>?</span></div>
+        <p class="orbit-label one">DUTY</p><p class="orbit-label two">VIRTUE</p><p class="orbit-label three">CARE</p>
+      </div>
+      <div class="scroll-note">Scroll to question your certainty <span>↓</span></div>
+    </section>
+
+    <section class="lab" id="lab">
+      <div class="shell lab-shell">
+        <div class="section-head">
+          <div><div class="eyebrow light"><span></span> The dilemma lab</div><h2>There are no<br>easy exits.</h2></div>
+          <div class="progress-wrap"><div class="progress-meta"><span>YOUR JOURNEY</span><b id="progressText">01 / 06</b></div><div class="progress"><i id="progressBar"></i></div></div>
+        </div>
+
+        <article class="dilemma-card" id="dilemmaCard">
+          <div class="card-top"><span class="case-number" id="caseNumber">CASE 01</span><span class="case-tag" id="caseTag">CONSEQUENCES</span></div>
+          <div class="dilemma-grid">
+            <div class="dilemma-story"><h3 id="dilemmaTitle"></h3><p id="dilemmaBody"></p><div class="stakes" id="stakes"></div></div>
+            <div class="choice-panel">
+              <p>Choose the action you could live with.</p>
+              <div id="choices"></div>
+              <small>Your choice stays on this device.</small>
+            </div>
+          </div>
+        </article>
+
+        <section class="reflection hidden" id="reflection" aria-live="polite">
+          <div class="reflection-head"><div><span class="eyebrow light"><span></span> The council responds</span><h3 id="verdictTitle"></h3></div><button id="nextDilemma">Next dilemma <span>→</span></button></div>
+          <div class="lenses" id="lenses"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="library shell" id="library">
+      <div class="library-intro"><div class="eyebrow"><span></span> A living reading room</div><h2>The ideas<br>behind the choices.</h2><p>No single shelf can hold every philosophical text. This is a deliberately plural, growing map of primary works — a doorway, not a canon carved in stone.</p></div>
+      <div class="library-tools">
+        <label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search thinkers, works, or ideas…" /></label>
+        <div class="filters" id="filters"><button class="active" data-filter="all">All traditions</button><button data-filter="west">Western</button><button data-filter="east">Eastern</button><button data-filter="religious">Sacred</button><button data-filter="modern">Modern</button></div>
+      </div>
+      <div class="book-grid" id="bookGrid"></div>
+      <p class="library-note"><span>✦</span> Public-domain links open the complete text. Contemporary works link to trusted scholarly overviews or publisher pages.</p>
+    </section>
+
+    <section class="portrait" id="about">
+      <div class="shell portrait-grid">
+        <div><div class="eyebrow light"><span></span> Your moral constellation</div><h2>You are more than<br>one philosophy.</h2></div>
+        <div><p>After each choice, your pattern becomes clearer — not as a label, but as an invitation to notice what you protect, what you fear, and whom you include in your moral circle.</p><div class="constellation" id="constellation"></div><button class="reset" id="resetJourney">Reset my journey ↺</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell"><a class="brand" href="#top"><span class="brand-mark">E</span><span>ETHOS</span></a><p>Made for reflection, not moral judgment.</p><div><a href="#library">Sources</a><a href="#about">Method</a></div></footer>
+  <script src="app.js"></script>
+</body>
+</html>
